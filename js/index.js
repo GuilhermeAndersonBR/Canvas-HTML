@@ -24,6 +24,9 @@ var gameArea = {
     }
 }
 
+// The higher this value, the less the fps will reflect temporary variations
+// A value of 1 will only keep the last value
+
 function updateGameArea() {
     gameComponent.crashWith(gameObstacle);
     gameArea.clear();
@@ -32,3 +35,24 @@ function updateGameArea() {
     gameObstacle.update();
     gameComponent.updateMovements();
 }
+
+let be = Date.now(),fps=0;
+requestAnimationFrame(
+    function loop(){
+        let now = Date.now()
+        fps = Math.round(1000 / (now - be))
+        be = now
+        requestAnimationFrame(loop)
+        if (fps < 35){
+          kFps.style.color = "red"
+          kFps.textContent = fps
+        } if (fps >= 35 && fps <= 41) {
+            kFps.style.color = "deepskyblue"
+            kFps.textContent = fps + " FPS"
+          } else {
+            kFps.style.color = "black"
+            kFps.textContent = fps + " FPS"
+        }
+        kpFps.value = fps;
+    }
+ )
