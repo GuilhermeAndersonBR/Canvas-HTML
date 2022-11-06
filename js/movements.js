@@ -1,4 +1,4 @@
-let baseSpeed = 2
+let baseSpeed = [8,2,2,2];
 
 function allMovements() {
 
@@ -16,9 +16,17 @@ function allMovements() {
 function Movement() {
     gameComponent.speedX = 0;
     gameComponent.speedY = 0;
-    if (gameArea.keys && gameArea.keys['w']) {gameComponent.speedY = -baseSpeed; }
-    if (gameArea.keys && gameArea.keys['s']) {gameComponent.speedY = baseSpeed; }
-    if (gameArea.keys && gameArea.keys['a']) {gameComponent.speedX= -baseSpeed; }
-    if (gameArea.keys && gameArea.keys['d']) {gameComponent.speedX= baseSpeed; }
+    if (!gameComponent.crashWith(gameObstacle).localCrash.crashBottom || !gameComponent.crashWith(gameObstacle).crash) {
+        if (gameArea.keys && gameArea.keys['w']) {gameComponent.speedY = -baseSpeed[0]; }
+    }
+    if (!gameComponent.crashWith(gameObstacle).localCrash.crashTop || !gameComponent.crashWith(gameObstacle).crash) {
+        if (gameArea.keys && gameArea.keys['s']) {gameComponent.speedY = baseSpeed[1]; }
+    }
+    if (!gameComponent.crashWith(gameObstacle).localCrash.crashRight || !gameComponent.crashWith(gameObstacle).crash) {
+        if (gameArea.keys && gameArea.keys['a']) {gameComponent.speedX = -baseSpeed[2]; }
+    }
+    if (!gameComponent.crashWith(gameObstacle).localCrash.crashLeft || !gameComponent.crashWith(gameObstacle).crash) {
+        if (gameArea.keys && gameArea.keys['d']) {gameComponent.speedX = baseSpeed[3]; }
+    }
 }
 

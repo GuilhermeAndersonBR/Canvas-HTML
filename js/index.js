@@ -1,7 +1,9 @@
+var gameObstacles = [];
+
 function startGame() {
     gameArea.start();
     gameComponent = new component(20, 30, "red", 10, 10, true);
-    gameObstacle = new component(100, 100, "cyan", 50, 50, false);
+    gameObstacle = new component(gameArea.canvas.width - 100, 100, "cyan", 50, gameArea.canvas.height - 300, false);
 }
 
 var gameArea = {
@@ -23,6 +25,7 @@ var gameArea = {
 }
 
 function updateGameArea() {
+    gameComponent.crashWith(gameObstacle);
     gameArea.clear();
     gameComponent.update();
     Movement();

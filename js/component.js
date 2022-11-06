@@ -1,4 +1,4 @@
-const gravity = 0;
+const gravity = 0.5;
 
 function component(width, height, color, x, y, movement, type) {
     this.type = type;
@@ -11,9 +11,6 @@ function component(width, height, color, x, y, movement, type) {
     this.movement = movement;
     
     this.update = function() {
-        if (this.movement) {
-            this.gravityMovement = this.y += gravity;
-        }
         this.gravityMovement;
         this.ctx = gameArea.context;
         this.ctx.fillStyle = color;
@@ -24,5 +21,42 @@ function component(width, height, color, x, y, movement, type) {
 
         this.x += this.speedX;
         this.y += this.speedY;
+    }
+
+    this.crashWith = function(otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+            crash = false;
+        }
+
+        var localCrash = {
+            crashRight: (myleft == otherright),
+            crashLeft: (myright == otherleft),
+            crashTop: (mybottom == othertop),
+            crashBottom: (mytop == otherbottom),
+        }
+
+        if (this.movement && !crash) {
+            this.gravityMovement = this.y += gravity;
+        } else {
+            if (!localCrash.crashTop) {
+                this.gravityMovement = this.y += gravity;
+            }
+        }
+
+        var crashResponse = {
+            crash,
+            localCrash
+        }
+
+        return crashResponse;
     }
 }
